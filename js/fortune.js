@@ -644,8 +644,8 @@ document.addEventListener('DOMContentLoaded', function() {
             clearDivinationHistory();
             showDivinationHistory();
         });
-    }
-});
+                }
+            });
 
 // 添加历史记录显示功能
 function showDivinationHistory() {
