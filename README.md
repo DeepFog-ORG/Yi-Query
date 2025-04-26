@@ -41,14 +41,14 @@
 2. 按照Vercel提示完成部署
 3. 部署完成后，您将获得一个可访问的URL
 
-### Cloudflare Pages 一键部署
+### Cloudflare Workers 一键部署
 
-[![Deploy to Cloudflare Pages](https://img.shields.io/badge/部署到-Cloudflare%20Pages-orange?logo=cloudflare&style=for-the-badge)](https://dash.cloudflare.com/sign-up?redirect_url=https://dash.cloudflare.com/:account/pages/new/import-git?repository_url=https://github.com/DeepFog-ORG/Yi-Query)
+[![Deploy to Cloudflare Workers](https://img.shields.io/badge/部署到-Cloudflare%20Workers-orange?logo=cloudflare&style=for-the-badge)](https://dash.cloudflare.com/sign-up?redirect_url=https://dash.cloudflare.com/:account/workers/new)
 
 1. 点击上方按钮
 2. 登录您的Cloudflare账户
-3. 按照提示完成部署流程
-4. 部署完成后，您将获得一个*.pages.dev域名
+3. 按照提示完成Workers部署流程
+4. 部署完成后，您将获得一个Workers服务域名
 
 ## 本地开发
 
