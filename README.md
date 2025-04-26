@@ -35,7 +35,7 @@
 
 ### Vercel 一键部署
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyourname%2FYi-Query)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDeepFog-ORG%2FYi-Query)
 
 1. 点击上方按钮
 2. 按照Vercel提示完成部署
@@ -43,7 +43,7 @@
 
 ### Cloudflare Pages 一键部署
 
-[![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/yourname/Yi-Query)
+[![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/DeepFog-ORG/Yi-Query)
 
 1. 点击上方按钮
 2. 登录您的Cloudflare账户
