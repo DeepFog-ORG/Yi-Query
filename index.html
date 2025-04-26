@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>易数 - 周易与梅花易数运势测算与寻物服务</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+    <!-- 自定义CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        highlight: '#00FFFF',
+                        secondary: '#FF00FF',
+                        tertiary: '#FFFF00',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            },
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .highlight-gradient {
+            background: linear-gradient(180deg, rgba(0, 255, 255, 0.8) 0%, rgba(0, 255, 255, 0) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .secondary-gradient {
+            background: linear-gradient(180deg, rgba(255, 0, 255, 0.8) 0%, rgba(255, 0, 255, 0) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <main class="flex-grow flex flex-col items-center justify-center p-4 md:p-8">
+        <div class="container mx-auto max-w-6xl">
+            <!-- 标题区域 -->
+            <div class="text-center mb-16 animate-on-scroll">
+                <h1 class="text-6xl md:text-9xl font-bold mb-4 highlight-gradient">易数</h1>
+                <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
+                    基于周易与梅花易数原理，探索命运轨迹，寻找失物方位
+                </p>
+            </div>
+            
+            <!-- 主要功能按钮 -->
+            <div class="flex flex-col md:flex-row justify-center gap-8 mt-12 animate-on-scroll" style="transition-delay: 0.2s;">
+                <a href="fortune.html" class="group">
+                    <div class="border border-highlight/30 bg-black/60 backdrop-blur-sm p-8 rounded-xl hover:bg-highlight/10 transition-all duration-500 flex flex-col items-center text-center">
+                        <i class="fas fa-star text-5xl mb-6 text-highlight"></i>
+                        <h2 class="text-4xl font-bold mb-4">卜命</h2>
+                        <p class="text-gray-400">探索命运轨迹，揭示人生吉凶</p>
+                    </div>
+                </a>
+                
+                <a href="lost-item.html" class="group">
+                    <div class="border border-secondary/30 bg-black/60 backdrop-blur-sm p-8 rounded-xl hover:bg-secondary/10 transition-all duration-500 flex flex-col items-center text-center">
+                        <i class="fas fa-search-location text-5xl mb-6 text-secondary"></i>
+                        <h2 class="text-4xl font-bold mb-4">寻物</h2>
+                        <p class="text-gray-400">指引方位，找回遗失之物</p>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- 简介区域 -->
+            <div class="bento-grid mt-24 animate-on-scroll" style="transition-delay: 0.4s;">
+                <div class="border border-gray-800 bg-black/60 backdrop-blur-sm p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4">周易</h3>
+                    <p class="text-gray-400">中国古代最重要的经典之一，包含六十四卦，阐述宇宙变化规律与人事哲理。</p>
+                </div>
+                
+                <div class="border border-gray-800 bg-black/60 backdrop-blur-sm p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4">梅花易数</h3>
+                    <p class="text-gray-400">源于宋代，结合周易与数理，是一种简便易行的占卜方法。</p>
+                </div>
+                
+                <div class="border border-gray-800 bg-black/60 backdrop-blur-sm p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4">科学解析</h3>
+                    <p class="text-gray-400">通过现代数据可视化技术，将古老智慧以直观方式呈现。</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="py-6 border-t border-gray-800">
+        <div class="container mx-auto text-center text-gray-500">
+            <p>© <span id="current-year">2023</span> 易数 - 周易与梅花易数运势测算与寻物服务</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // 滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            
+            function checkScroll() {
+                animatedElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight * 0.8) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            // 初始检查
+            checkScroll();
+            
+            // 滚动时检查
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+</body>
+</html>

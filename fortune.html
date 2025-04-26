@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卜命 - 易数</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 自定义CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        highlight: '#00FFFF',
+                        secondary: '#FF00FF',
+                        tertiary: '#FFFF00',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            },
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .highlight-gradient {
+            background: linear-gradient(180deg, rgba(0, 255, 255, 0.8) 0%, rgba(0, 255, 255, 0) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .secondary-gradient {
+            background: linear-gradient(180deg, rgba(255, 0, 255, 0.8) 0%, rgba(255, 0, 255, 0) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hexagram-line {
+            height: 12px;
+            margin: 8px 0;
+            width: 100%;
+            max-width: 120px;
+        }
+        .yang-line {
+            background-color: #00FFFF;
+        }
+        .yin-line {
+            display: flex;
+            justify-content: space-between;
+        }
+        .yin-line-part {
+            background-color: #00FFFF;
+            width: 45%;
+            height: 100%;
+        }
+        .result-container {
+            display: none;
+        }
+        .mega-text {
+            font-size: 10rem;
+            line-height: 1;
+        }
+        @media (max-width: 768px) {
+            .mega-text {
+                font-size: 6rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="py-4 border-b border-gray-800">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold highlight-gradient">易数</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="text-gray-400 hover:text-highlight transition-colors">首页</a></li>
+                    <li><a href="fortune.html" class="text-highlight">卜命</a></li>
+                    <li><a href="lost-item.html" class="text-gray-400 hover:text-highlight transition-colors">寻物</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-start p-4 md:p-8 pt-12">
+        <div class="container mx-auto max-w-6xl">
+            <!-- 标题区域 -->
+            <div class="text-center mb-16 animate-on-scroll">
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 highlight-gradient">周易卜命</h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    基于周易六十四卦，探索命运轨迹，揭示人生吉凶
+                </p>
+            </div>
+            
+            <!-- 占卜表单 -->
+            <div id="fortune-form" class="border border-highlight/30 bg-black/60 backdrop-blur-sm p-8 rounded-xl max-w-2xl mx-auto animate-on-scroll">
+                <h2 class="text-3xl font-bold mb-6 text-center">开始占卜</h2>
+                
+                <div class="mb-6">
+                    <label for="question" class="block text-gray-300 mb-2">请输入您想要占卜的问题：</label>
+                    <textarea id="question" rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-highlight focus:ring-1 focus:ring-highlight focus:outline-none" placeholder="例如：我近期的事业发展如何？"></textarea>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="birth-date" class="block text-gray-300 mb-2">出生日期（可选）：</label>
+                    <input type="date" id="birth-date" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-highlight focus:ring-1 focus:ring-highlight focus:outline-none">
+                </div>
+                
+                <div class="text-center">
+                    <button id="start-divination" class="bg-highlight/20 hover:bg-highlight/30 text-highlight border border-highlight/50 font-bold py-3 px-8 rounded-lg transition-all duration-300">
+                        开始占卜
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 占卜过程动画 -->
+            <div id="divination-process" class="mt-16 text-center hidden animate-on-scroll">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-highlight"></div>
+                    </div>
+                    <div class="relative z-10">
+                        <i class="fas fa-yin-yang text-6xl text-highlight mb-6 animate-pulse"></i>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold mt-8">正在演算卦象...</h3>
+                <p class="text-gray-400 mt-4">古老的智慧正在解读您的命运</p>
+            </div>
+            
+            <!-- 结果展示 -->
+            <div id="result-container" class="result-container mt-16 animate-on-scroll">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold mb-6">占卜结果</h2>
+                    <p class="text-xl text-gray-300">以下是基于周易原理的解读</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 左侧：卦象与结果 -->
+                    <div class="border border-highlight/30 bg-black/60 backdrop-blur-sm p-8 rounded-xl">
+                        <div class="flex justify-between items-center mb-8">
+                            <div>
+                                <h3 class="text-2xl font-bold mb-2">本卦</h3>
+                                <p id="hexagram-name" class="text-xl text-highlight"></p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="hexagram-lines" class="flex flex-col items-center">
+                                    <!-- 卦象线条将通过JS动态生成 -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center my-12">
+                            <div id="fortune-result" class="mega-text highlight-gradient font-bold"></div>
+                            <p class="text-xl mt-4">总体运势</p>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="text-xl font-bold mb-4">卦辞解读</h4>
+                            <p id="hexagram-interpretation" class="text-gray-300 leading-relaxed"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：详细分析 -->
+                    <div class="border border-gray-800 bg-black/60 backdrop-blur-sm p-8 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-6">五行分析</h3>
+                        
+                        <div class="mb-8">
+                            <canvas id="elements-chart" width="400" height="300"></canvas>
+                        </div>
+                        
+                        <div class="mt-12">
+                            <h4 class="text-xl font-bold mb-4">运势详解</h4>
+                            <div id="detailed-fortune" class="space-y-4 text-gray-300">
+                                <!-- 详细解读将通过JS动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 text-center">
+                    <button id="new-divination" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300">
+                        重新占卜
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="py-6 border-t border-gray-800 mt-16">
+        <div class="container mx-auto text-center text-gray-500">
+            <p>© 2023 易数 - 周易与梅花易数运势测算与寻物服务</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/fortune.js"></script>
+    <script>
+        // 滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            
+            function checkScroll() {
+                animatedElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight * 0.8) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            // 初始检查
+            checkScroll();
+            
+            // 滚动时检查
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+</body>
+</html>

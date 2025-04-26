@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻物 - 易数</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 自定义CSS -->
+    <link rel="stylesheet" href="css/custom.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        highlight: '#00FFFF',
+                        secondary: '#FF00FF',
+                        tertiary: '#FFFF00',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            },
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+        .highlight-gradient {
+            background: linear-gradient(180deg, rgba(0, 255, 255, 0.8) 0%, rgba(0, 255, 255, 0) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .secondary-gradient {
+            background: linear-gradient(180deg, rgba(255, 0, 255, 0.8) 0%, rgba(255, 0, 255, 0) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .result-container {
+            display: none;
+        }
+        .mega-text {
+            font-size: 10rem;
+            line-height: 1;
+        }
+        @media (max-width: 768px) {
+            .mega-text {
+                font-size: 6rem;
+            }
+        }
+        .compass {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        .compass-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 0, 255, 0.5);
+            border-radius: 50%;
+        }
+        .compass-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255, 0, 255, 0.8), rgba(255, 0, 255, 0));
+            transform-origin: left center;
+            transform: translateY(-50%) rotate(0deg);
+            transition: transform 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .compass-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 0, 255, 0.8);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .compass-direction {
+            position: absolute;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .compass-north {
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FF00FF;
+        }
+        .compass-east {
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+        }
+        .compass-south {
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .compass-west {
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="py-4 border-b border-gray-800">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold highlight-gradient">易数</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="index.html" class="text-gray-400 hover:text-highlight transition-colors">首页</a></li>
+                    <li><a href="fortune.html" class="text-gray-400 hover:text-highlight transition-colors">卜命</a></li>
+                    <li><a href="lost-item.html" class="text-secondary">寻物</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-start p-4 md:p-8 pt-12">
+        <div class="container mx-auto max-w-6xl">
+            <!-- 标题区域 -->
+            <div class="text-center mb-16 animate-on-scroll">
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 secondary-gradient">梅花寻物</h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    基于梅花易数原理，指引方位，找回遗失之物
+                </p>
+            </div>
+            
+            <!-- 寻物表单 -->
+            <div id="lost-item-form" class="border border-secondary/30 bg-black/60 backdrop-blur-sm p-8 rounded-xl max-w-2xl mx-auto animate-on-scroll">
+                <h2 class="text-3xl font-bold mb-6 text-center">开始寻物</h2>
+                
+                <div class="mb-6">
+                    <label for="item-description" class="block text-gray-300 mb-2">请描述您丢失的物品：</label>
+                    <textarea id="item-description" rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" placeholder="例如：一把银色钥匙，昨天下午丢失"></textarea>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="lost-time" class="block text-gray-300 mb-2">丢失时间（可选）：</label>
+                    <input type="datetime-local" id="lost-time" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="lost-location" class="block text-gray-300 mb-2">最后见到的地点（可选）：</label>
+                    <input type="text" id="lost-location" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" placeholder="例如：家中客厅">
+                </div>
+                
+                <div class="text-center">
+                    <button id="start-finding" class="bg-secondary/20 hover:bg-secondary/30 text-secondary border border-secondary/50 font-bold py-3 px-8 rounded-lg transition-all duration-300">
+                        开始寻找
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 寻物过程动画 -->
+            <div id="finding-process" class="mt-16 text-center hidden animate-on-scroll">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-secondary"></div>
+                    </div>
+                    <div class="relative z-10">
+                        <i class="fas fa-search text-6xl text-secondary mb-6 animate-pulse"></i>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold mt-8">正在推演方位...</h3>
+                <p class="text-gray-400 mt-4">梅花易数正在为您指引方向</p>
+            </div>
+            
+            <!-- 结果展示 -->
+            <div id="result-container" class="result-container mt-16 animate-on-scroll">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold mb-6">寻物结果</h2>
+                    <p class="text-xl text-gray-300">以下是基于梅花易数的方位指引</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- 左侧：方位指引 -->
+                    <div class="border border-secondary/30 bg-black/60 backdrop-blur-sm p-8 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-6 text-center">方位指引</h3>
+                        
+                        <div class="compass mb-8">
+                            <div class="compass-circle"></div>
+                            <div class="compass-arrow" id="compass-arrow"></div>
+                            <div class="compass-center"></div>
+                            <div class="compass-direction compass-north">北</div>
+                            <div class="compass-direction compass-east">东</div>
+                            <div class="compass-direction compass-south">南</div>
+                            <div class="compass-direction compass-west">西</div>
+                        </div>
+                        
+                        <div class="text-center my-8">
+                            <div id="direction-result" class="mega-text secondary-gradient font-bold"></div>
+                            <p class="text-xl mt-4">推荐寻找方向</p>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="text-xl font-bold mb-4">距离估计</h4>
+                            <p id="distance-estimation" class="text-gray-300 leading-relaxed"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧：详细分析 -->
+                    <div class="border border-gray-800 bg-black/60 backdrop-blur-sm p-8 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-6">详细解析</h3>
+                        
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold mb-4">物品特征</h4>
+                            <p id="item-features" class="text-gray-300 leading-relaxed"></p>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold mb-4">环境描述</h4>
+                            <p id="environment-description" class="text-gray-300 leading-relaxed"></p>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold mb-4">寻找建议</h4>
+                            <ul id="finding-suggestions" class="list-disc list-inside text-gray-300 leading-relaxed">
+                                <!-- 建议将通过JS动态生成 -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-12 text-center">
+                    <button id="new-finding" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300">
+                        重新寻物
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="py-6 border-t border-gray-800 mt-16">
+        <div class="container mx-auto text-center text-gray-500">
+            <p>© 2023 易数 - 周易与梅花易数运势测算与寻物服务</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/lost-item.js"></script>
+    <script>
+        // 滚动动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
+            
+            function checkScroll() {
+                animatedElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight * 0.8) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            // 初始检查
+            checkScroll();
+            
+            // 滚动时检查
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+</body>
+</html>
