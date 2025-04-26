@@ -43,7 +43,7 @@
 
 ### Cloudflare Pages 一键部署
 
-[![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://pages.cloudflare.com/?utm_source=github&utm_medium=button&utm_campaign=deploy&utm_term=Yi-Query&utm_content=deploy_to_pages#https://github.com/DeepFog-ORG/Yi-Query)
+[![Deploy to Cloudflare Pages](https://img.shields.io/badge/部署到-Cloudflare%20Pages-orange?logo=cloudflare&style=for-the-badge)](https://dash.cloudflare.com/sign-up?redirect_url=https://dash.cloudflare.com/:account/pages/new/import-git?repository_url=https://github.com/DeepFog-ORG/Yi-Query)
 
 1. 点击上方按钮
 2. 登录您的Cloudflare账户
