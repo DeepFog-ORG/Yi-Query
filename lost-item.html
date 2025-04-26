@@ -159,22 +159,62 @@
             <!-- 寻物表单 -->
             <div id="lost-item-form" class="border border-secondary/30 bg-black/60 backdrop-blur-sm p-8 rounded-xl max-w-2xl mx-auto animate-on-scroll">
                 <h2 class="text-3xl font-bold mb-6 text-center">开始寻物</h2>
-                
                 <div class="mb-6">
-                    <label for="item-description" class="block text-gray-300 mb-2">请描述您丢失的物品：</label>
-                    <textarea id="item-description" rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" placeholder="例如：一把银色钥匙，昨天下午丢失"></textarea>
+                    <label for="item-type" class="block text-gray-300 mb-2">物品类型：</label>
+                    <select id="item-type" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="electronics">电子产品</option>
+                        <option value="valuable">贵重物品</option>
+                        <option value="clothes">衣物/布料</option>
+                        <option value="key">钥匙/卡片</option>
+                        <option value="book">书籍/文件</option>
+                        <option value="pet">宠物</option>
+                        <option value="other">其他</option>
+                    </select>
                 </div>
-                
                 <div class="mb-6">
-                    <label for="lost-time" class="block text-gray-300 mb-2">丢失时间（可选）：</label>
-                    <input type="datetime-local" id="lost-time" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none">
+                    <label for="item-color" class="block text-gray-300 mb-2">颜色：</label>
+                    <select id="item-color" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="black">黑色</option>
+                        <option value="white">白色</option>
+                        <option value="red">红色</option>
+                        <option value="blue">蓝色</option>
+                        <option value="green">绿色</option>
+                        <option value="yellow">黄色</option>
+                        <option value="other">其他</option>
+                    </select>
                 </div>
-                
                 <div class="mb-6">
-                    <label for="lost-location" class="block text-gray-300 mb-2">最后见到的地点（可选）：</label>
-                    <input type="text" id="lost-location" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-secondary focus:ring-1 focus:ring-secondary focus:outline-none" placeholder="例如：家中客厅">
+                    <label for="item-material" class="block text-gray-300 mb-2">材质：</label>
+                    <select id="item-material" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="metal">金属</option>
+                        <option value="plastic">塑料</option>
+                        <option value="fabric">布料</option>
+                        <option value="paper">纸质</option>
+                        <option value="other">其他</option>
+                    </select>
                 </div>
-                
+                <div class="mb-6">
+                    <label for="lost-location" class="block text-gray-300 mb-2">丢失地点：</label>
+                    <select id="lost-location" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="home">家中</option>
+                        <option value="office">办公室</option>
+                        <option value="school">学校</option>
+                        <option value="public">公共场所</option>
+                        <option value="vehicle">交通工具</option>
+                        <option value="outdoor">户外</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label for="lost-time" class="block text-gray-300 mb-2">丢失时间：</label>
+                    <select id="lost-time" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="today">今天</option>
+                        <option value="yesterday">昨天</option>
+                        <option value="threedays">最近三天</option>
+                        <option value="week">一周内</option>
+                        <option value="earlier">更早</option>
+                    </select>
+                </div>
                 <div class="text-center">
                     <button id="start-finding" class="bg-secondary/20 hover:bg-secondary/30 text-secondary border border-secondary/50 font-bold py-3 px-8 rounded-lg transition-all duration-300">
                         开始寻找

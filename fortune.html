@@ -86,6 +86,52 @@
                 font-size: 6rem;
             }
         }
+        .history-container {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .clear-history-btn {
+            padding: 0.5rem 1rem;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .clear-history-btn:hover {
+            background-color: #c82333;
+        }
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .history-item {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .history-question {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .history-result {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        .history-time {
+            font-size: 0.8rem;
+            color: #999;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -115,17 +161,54 @@
             <!-- 占卜表单 -->
             <div id="fortune-form" class="border border-highlight/30 bg-black/60 backdrop-blur-sm p-8 rounded-xl max-w-2xl mx-auto animate-on-scroll">
                 <h2 class="text-3xl font-bold mb-6 text-center">开始占卜</h2>
-                
                 <div class="mb-6">
-                    <label for="question" class="block text-gray-300 mb-2">请输入您想要占卜的问题：</label>
-                    <textarea id="question" rows="3" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-highlight focus:ring-1 focus:ring-highlight focus:outline-none" placeholder="例如：我近期的事业发展如何？"></textarea>
+                    <label for="question-type" class="block text-gray-300 mb-2">问题类型：</label>
+                    <select id="question-type" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="career">事业/工作</option>
+                        <option value="wealth">财运/投资</option>
+                        <option value="love">感情/婚姻</option>
+                        <option value="health">健康/疾病</option>
+                        <option value="study">学业/考试</option>
+                        <option value="family">家庭/亲子</option>
+                        <option value="social">人际/社交</option>
+                    </select>
                 </div>
-                
                 <div class="mb-6">
-                    <label for="birth-date" class="block text-gray-300 mb-2">出生日期（可选）：</label>
-                    <input type="date" id="birth-date" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white focus:border-highlight focus:ring-1 focus:ring-highlight focus:outline-none">
+                    <label for="situation" class="block text-gray-300 mb-2">具体情境：</label>
+                    <select id="situation" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="promotion">升职/跳槽</option>
+                        <option value="startup">创业/合作</option>
+                        <option value="investment">求财/理财</option>
+                        <option value="confession">恋爱/表白</option>
+                        <option value="marriage">婚姻/离异</option>
+                        <option value="illness">疾病/康复</option>
+                        <option value="exam">考试/升学</option>
+                        <option value="family_conflict">家庭矛盾</option>
+                        <option value="friendship">朋友关系</option>
+                    </select>
                 </div>
-                
+                <div class="mb-6">
+                    <label for="person" class="block text-gray-300 mb-2">相关人物：</label>
+                    <select id="person" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="self">自己</option>
+                        <option value="partner">配偶/恋人</option>
+                        <option value="child">子女</option>
+                        <option value="parent">父母</option>
+                        <option value="friend">朋友</option>
+                        <option value="colleague">同事/上司</option>
+                        <option value="rival">竞争对手</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div class="mb-6">
+                    <label for="time-range" class="block text-gray-300 mb-2">时间范围：</label>
+                    <select id="time-range" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-3 text-white">
+                        <option value="recent">近期（1个月内）</option>
+                        <option value="short">短期（3个月内）</option>
+                        <option value="mid">中期（半年内）</option>
+                        <option value="long">长期（一年及以上）</option>
+                    </select>
+                </div>
                 <div class="text-center">
                     <button id="start-divination" class="bg-highlight/20 hover:bg-highlight/30 text-highlight border border-highlight/50 font-bold py-3 px-8 rounded-lg transition-all duration-300">
                         开始占卜
@@ -203,6 +286,14 @@
                     </button>
                 </div>
             </div>
+
+            <div class="history-container">
+                <div class="history-header">
+                    <h2>占卜历史</h2>
+                    <button id="clear-history-btn" class="clear-history-btn">清除历史</button>
+                </div>
+                <div id="divination-history" class="history-list"></div>
+            </div>
         </div>
     </main>
     
@@ -212,8 +303,8 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
-    <script src="js/fortune.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/fortune.js"></script>
     <script>
         // 滚动动画
         document.addEventListener('DOMContentLoaded', function() {

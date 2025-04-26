@@ -1,0 +1,26 @@
+{
+  "name": "yi-query",
+  "version": "1.0.0",
+  "description": "Yi Query Project",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve",
+    "build": "echo 'Build process not configured yet'",
+    "test": "echo 'Test process not configured yet'",
+    "lint": "eslint . --ext .js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 

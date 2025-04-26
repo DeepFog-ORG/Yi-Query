@@ -84,8 +84,137 @@ function setDynamicYear() {
     }
 }
 
-// 在 DOM 加载完成后调用
-document.addEventListener('DOMContentLoaded', function() {
+// 添加页面切换动画
+function animatePageTransition(fromPage, toPage) {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => {
+        if (page === fromPage) {
+            page.classList.add('fade-out');
+            setTimeout(() => {
+                page.style.display = 'none';
+                page.classList.remove('fade-out');
+            }, 300);
+        } else if (page === toPage) {
+            page.style.display = 'block';
+            page.classList.add('fade-in');
+            setTimeout(() => {
+                page.classList.remove('fade-in');
+            }, 300);
+        }
+    });
+}
+
+// 添加加载动画
+function showLoadingAnimation(element) {
+    element.innerHTML = '<div class="loading-spinner"></div>';
+    element.classList.add('loading');
+}
+
+function hideLoadingAnimation(element) {
+    element.classList.remove('loading');
+    element.innerHTML = '';
+}
+
+// 添加表单验证动画
+function animateFormValidation(element, isValid) {
+    if (isValid) {
+        element.classList.add('valid');
+        setTimeout(() => {
+            element.classList.remove('valid');
+        }, 1000);
+    } else {
+        element.classList.add('invalid');
+        setTimeout(() => {
+            element.classList.remove('invalid');
+        }, 1000);
+    }
+}
+
+// 添加结果展示动画
+function animateResultDisplay(element) {
+    element.classList.add('result-enter');
+    setTimeout(() => {
+        element.classList.remove('result-enter');
+    }, 500);
+}
+
+// 添加滚动平滑效果
+function smoothScrollToElement(element, offset = 0) {
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+    });
+}
+
+// 添加触摸反馈效果
+function addTouchFeedback(element) {
+    element.addEventListener('touchstart', () => {
+        element.classList.add('touch-active');
+    });
+    
+    element.addEventListener('touchend', () => {
+        element.classList.remove('touch-active');
+    });
+}
+
+// 添加键盘导航支持
+function addKeyboardNavigation() {
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+            const focusableElements = document.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    lastElement.focus();
+                    e.preventDefault();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    firstElement.focus();
+                    e.preventDefault();
+                }
+            }
+        }
+    });
+}
+
+// 添加响应式布局支持
+function handleResponsiveLayout() {
+    const updateLayout = () => {
+        const width = window.innerWidth;
+        const elements = document.querySelectorAll('.responsive-element');
+        
+        elements.forEach(element => {
+            if (width < 768) {
+                element.classList.add('mobile');
+                element.classList.remove('desktop');
+            } else {
+                element.classList.add('desktop');
+                element.classList.remove('mobile');
+            }
+        });
+    };
+    
+    window.addEventListener('resize', updateLayout);
+    updateLayout();
+}
+
+// 初始化所有交互功能
+document.addEventListener('DOMContentLoaded', () => {
+    // 添加触摸反馈到所有按钮
+    document.querySelectorAll('button').forEach(addTouchFeedback);
+    
+    // 添加键盘导航
+    addKeyboardNavigation();
+    
+    // 添加响应式布局支持
+    handleResponsiveLayout();
+    
+    // 设置动态年份
     setDynamicYear();
-    // ... 其他 DOMContentLoaded 逻辑 ...
 });

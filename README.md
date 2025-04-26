@@ -45,10 +45,23 @@
 
 [![Deploy to Cloudflare Workers](https://img.shields.io/badge/部署到-Cloudflare%20Workers-orange?logo=cloudflare&style=for-the-badge)](https://dash.cloudflare.com/sign-up?redirect_url=https://dash.cloudflare.com/:account/workers/new)
 
-1. 点击上方按钮
-2. 登录您的Cloudflare账户
-3. 按照提示完成Workers部署流程
-4. 部署完成后，您将获得一个Workers服务域名
+1. 点击上方按钮注册并登录 Cloudflare 账号
+2. 本地安装 wrangler 工具（如未安装）：
+   ```bash
+   npm install -g wrangler
+   ```
+3. 运行 `wrangler login` 绑定你的 Cloudflare 账号
+4. 复制 `wrangler.example.toml` 为 `wrangler.toml`
+5. （可选）如需自定义配置，可编辑 `wrangler.toml`
+6. 运行以下命令一键部署到你的 workers.dev 子域名：
+   ```bash
+   wrangler publish
+   ```
+
+> **注意：**
+> - `wrangler.toml` 不包含账号信息，安全开源。
+> - 如需部署到自定义域名，请手动补充 `account_id` 字段。
+> - 推荐将 `wrangler.toml` 加入 `.gitignore`，防止私有配置上传。
 
 ## 本地开发
 

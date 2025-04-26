@@ -240,30 +240,155 @@ document.addEventListener('DOMContentLoaded', function() {
         else if (relation === "用克体") { distance = "远处"; if (['坎', '离'].includes(tiGua.name) || ['坎', '离'].includes(yongGua.name)) distance += " (可能较远或难达)"; }
 
 
-        // 7. 断特征/环境 (保持不变)
-        // ... (代码同前) ...
-        let featureDetails = "物品可能具有以下特征：";
-        // ... (根据体卦五行和卦名添加描述) ...
-        let environmentDetails = "寻找环境可能具有以下特征：";
-        // ... (根据用卦五行和卦名添加描述) ...
+        // 7. 断特征/环境
+        let featureDetails = "物品可能具有以下特征：\n";
+        
+        // 根据体卦五行和卦名添加物品特征描述
+        switch(tiGua.element) {
+            case "金":
+                featureDetails += "- 金属材质或金属光泽\n";
+                featureDetails += "- 圆形或球形\n";
+                featureDetails += "- 贵重或坚硬\n";
+                if (tiGua.name === "乾") {
+                    featureDetails += "- 可能是电子产品或贵重物品\n";
+                    featureDetails += "- 可能有金色或银色外观\n";
+                } else if (tiGua.name === "兑") {
+                    featureDetails += "- 可能是破损的金属物品\n";
+                    featureDetails += "- 可能有缺口或凹陷\n";
+                }
+                break;
+            case "木":
+                featureDetails += "- 木质或植物材质\n";
+                featureDetails += "- 长条形或细长\n";
+                featureDetails += "- 绿色或棕色\n";
+                if (tiGua.name === "震") {
+                    featureDetails += "- 可能是会发出声音的物品\n";
+                    featureDetails += "- 可能是电子设备或乐器\n";
+                } else if (tiGua.name === "巽") {
+                    featureDetails += "- 可能是轻薄的物品\n";
+                    featureDetails += "- 可能是纸张或布料\n";
+                }
+                break;
+            case "水":
+                featureDetails += "- 液体或与水相关\n";
+                featureDetails += "- 黑色或深色\n";
+                featureDetails += "- 易碎或易变形\n";
+                if (tiGua.name === "坎") {
+                    featureDetails += "- 可能是容器或瓶子\n";
+                    featureDetails += "- 可能是电子产品或液体\n";
+                }
+                break;
+            case "火":
+                featureDetails += "- 红色或暖色调\n";
+                featureDetails += "- 发光或发热\n";
+                featureDetails += "- 电子或电力相关\n";
+                if (tiGua.name === "离") {
+                    featureDetails += "- 可能是文件或证件\n";
+                    featureDetails += "- 可能是发光物品\n";
+                }
+                break;
+            case "土":
+                featureDetails += "- 土色或黄色\n";
+                featureDetails += "- 方形或扁平\n";
+                featureDetails += "- 布料或纸张\n";
+                if (tiGua.name === "坤") {
+                    featureDetails += "- 可能是衣物或布料\n";
+                    featureDetails += "- 可能是方形物品\n";
+                } else if (tiGua.name === "艮") {
+                    featureDetails += "- 可能是石头或陶瓷\n";
+                    featureDetails += "- 可能是杂物或小物件\n";
+                }
+                break;
+        }
 
+        // 根据用卦五行和卦名添加环境描述
+        let environmentDetails = "寻找环境可能具有以下特征：\n";
+        
+        switch(yongGua.element) {
+            case "金":
+                environmentDetails += "- 金属或石头环境\n";
+                environmentDetails += "- 高处或开阔处\n";
+                if (yongGua.name === "乾") {
+                    environmentDetails += "- 可能是办公室或工作场所\n";
+                    environmentDetails += "- 可能是高处或显眼位置\n";
+                } else if (yongGua.name === "兑") {
+                    environmentDetails += "- 可能是破损或凹陷处\n";
+                    environmentDetails += "- 可能是金属容器内\n";
+                }
+                break;
+            case "木":
+                environmentDetails += "- 木质环境或植物附近\n";
+                environmentDetails += "- 长条形空间\n";
+                if (yongGua.name === "震") {
+                    environmentDetails += "- 可能是会发出声音的地方\n";
+                    environmentDetails += "- 可能是高处或显眼位置\n";
+                } else if (yongGua.name === "巽") {
+                    environmentDetails += "- 可能是通风处或角落\n";
+                    environmentDetails += "- 可能是轻薄的覆盖物下\n";
+                }
+                break;
+            case "水":
+                environmentDetails += "- 水边或潮湿处\n";
+                environmentDetails += "- 低洼处或暗处\n";
+                if (yongGua.name === "坎") {
+                    environmentDetails += "- 可能是容器内或凹陷处\n";
+                    environmentDetails += "- 可能是暗处或隐蔽处\n";
+                }
+                break;
+            case "火":
+                environmentDetails += "- 明亮或温暖处\n";
+                environmentDetails += "- 电子设备附近\n";
+                if (yongGua.name === "离") {
+                    environmentDetails += "- 可能是文件堆或书架\n";
+                    environmentDetails += "- 可能是发光处或显眼位置\n";
+                }
+                break;
+            case "土":
+                environmentDetails += "- 地面或低处\n";
+                environmentDetails += "- 方形空间\n";
+                if (yongGua.name === "坤") {
+                    environmentDetails += "- 可能是衣物堆或布料下\n";
+                    environmentDetails += "- 可能是地面或低处\n";
+                } else if (yongGua.name === "艮") {
+                    environmentDetails += "- 可能是角落或隐蔽处\n";
+                    environmentDetails += "- 可能是杂物堆中\n";
+                }
+                break;
+        }
 
-        // 8. 综合建议 (保持不变)
-        // ... (代码同前) ...
-        let suggestions = `(起卦方式: ${guaMethod})\n体用关系: ${relation} (${relationInterpretation})`;
-        suggestions += `\n主要寻找方向：${directionName}。距离估计：${distance}。`;
-        suggestions += `\n环境线索提示：${environmentDetails}`;
-        suggestions += `\n物品特征提示：${featureDetails}`;
-        suggestions += `\n综合建议：请重点在 ${directionName} 方向的 ${distance} 范围寻找...`;
-
+        // 根据五行生克关系添加建议
+        let findingSuggestions = "寻找建议：\n";
+        
+        if (relation === "用生体") {
+            findingSuggestions += "- 物品容易找到，保持耐心\n";
+            findingSuggestions += "- 按照提示的方向和环境特征寻找\n";
+            findingSuggestions += "- 注意显眼或高处位置\n";
+        } else if (relation === "体生用") {
+            findingSuggestions += "- 需要花费一些时间和精力\n";
+            findingSuggestions += "- 建议寻求他人帮助\n";
+            findingSuggestions += "- 注意检查隐蔽处\n";
+        } else if (relation === "用克体") {
+            findingSuggestions += "- 寻找难度较大，需要耐心\n";
+            findingSuggestions += "- 建议扩大搜索范围\n";
+            findingSuggestions += "- 注意检查不常去的地方\n";
+        } else if (relation === "体克用") {
+            findingSuggestions += "- 需要主动寻找，不要等待\n";
+            findingSuggestions += "- 注意检查相关物品附近\n";
+            findingSuggestions += "- 建议分区域仔细搜索\n";
+        } else {
+            findingSuggestions += "- 物品容易找到，保持信心\n";
+            findingSuggestions += "- 按照提示的方向和环境特征寻找\n";
+            findingSuggestions += "- 注意检查相关物品附近\n";
+        }
 
         return {
             direction: directionData,
             distance: distance,
             features: featureDetails,
             environment: environmentDetails,
-            suggestions: suggestions,
-            debugInfo: `方法:${guaMethod}, 上卦:${yongGua.name}(${upperTrigramNum}), 下卦:${tiGua.name}(${lowerTrigramNum}), 变爻:${changingLineNum}, 体:${tiGua.name}, 用:${yongGua.name}, 关系:${relation}`
+            suggestions: findingSuggestions,
+            relation: relation,
+            relationInterpretation: relationInterpretation
         };
     }
 

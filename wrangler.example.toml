@@ -1,0 +1,6 @@
+name = "yi-query"
+type = "javascript"
+workers_dev = true
+
+[build]
+command = "" 
